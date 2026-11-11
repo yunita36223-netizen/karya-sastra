@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Membaca Cerita - Media Pembelajaran Teks Sastra Kelas V SD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Fredoka & Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tone.js for Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Canvas Confetti for Reward Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        child: {
+                            bg: '#FAF7F0',
+                            card: '#FFFFFF',
+                            mint: '#A8E6CF',
+                            mintDark: '#2D6A4F',
+                            green: '#D4EDDA',
+                            yellow: '#FFD3B6',
+                            coral: '#FF8B94',
+                            sky: '#AED9E0',
+                            skyDark: '#1D3557',
+                            purple: '#E2D4F9',
+                            orange: '#FFAAA5',
+                            text: '#2D3748',
+                            gold: '#FFAAA5'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Fredoka', 'sans-serif'],
+                        body: ['Nunito', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #FFF5EB 0%, #E8F8F5 100%);
+            color: #2D3748;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .btn-child-primary {
+            background-color: #4ECDC4;
+            color: #064E3B;
+            box-shadow: 0 4px 0 #26A69A;
+            transition: all 0.15s ease;
+        }
+        .btn-child-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #26A69A;
+            background-color: #45B7AA;
+        }
+        .btn-child-primary:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #26A69A;
+        }
+        .btn-child-coral {
+            background-color: #FF8B94;
+            color: #780016;
+            box-shadow: 0 4px 0 #E5535E;
+            transition: all 0.15s ease;
+        }
+        .btn-child-coral:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #E5535E;
+        }
+        .btn-child-yellow {
+            background-color: #FFD97D;
+            color: #6C4A00;
+            box-shadow: 0 4px 0 #F4B41A;
+            transition: all 0.15s ease;
+        }
+        .card-bright {
+            background: #FFFFFF;
+            border-radius: 1.8rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border: 3px solid #FFE4E1;
+        }
+        .bounce-fun {
+            animation: bounceFun 1.8s infinite ease-in-out;
+        }
+        @keyframes bounceFun {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .wiggle-fun:hover {
+            animation: wiggle 0.4s ease-in-out infinite alternate;
+        }
+        @keyframes wiggle {
+            0% { transform: rotate(-3deg); }
+            100% { transform: rotate(3deg); }
+        }
+        .story-tab-active {
+            background-color: #4ECDC4 !important;
+            color: #FFFFFF !important;
+            border-color: #26A69A !important;
+        }
+        .nav-menu-active {
+            background-color: #FF8B94 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 3px 0 #E5535E !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center p-3 md:p-5">
+
+    <!-- Header & App Bar -->
+    <header class="w-full max-w-5xl bg-white/90 backdrop-blur-md rounded-2xl p-4 mb-3 border-3 border-[#FFD97D] shadow-md flex flex-col gap-3">
+        
+        <!-- Top Title & Badge Bar -->
+        <div class="flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-2xl bg-[#FFD97D] flex items-center justify-center text-[#78350F] text-2xl font-bold shadow-sm bounce-fun">
+                    📚
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-heading font-extrabold text-[#1E3A8A]">Petualangan Cerita Rakyat</h1>
+                    <p class="text-xs text-emerald-700 font-bold bg-emerald-100 px-2.5 py-0.5 rounded-full inline-block mt-0.5">Bahasa Indonesia Kelas V SD • UbD Model</p>
+                </div>
+            </div>
+
+            <!-- Score & Stars Badge -->
+            <div class="flex items-center space-x-3 bg-[#FFF3BF] px-4 py-2 rounded-2xl border-2 border-[#F4B41A]">
+                <span id="student-name-badge" class="font-heading font-extrabold text-emerald-800 text-sm bg-white px-3 py-1 rounded-full border border-emerald-300 hidden"></span>
+                <div class="flex items-center gap-1 text-amber-500 text-lg">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <span id="star-score" class="font-heading font-extrabold text-amber-900 text-sm">Bintang: 100</span>
+            </div>
+        </div>
+
+        <!-- MENU NAVIGASI PISAH DI ATAS (GRID/TABS PER HALAMAN) -->
+        <nav class="w-full bg-[#FFF9E6] p-1 rounded-xl border-2 border-[#FFE082] overflow-x-auto">
+            <div class="flex items-center gap-0 min-w-max">
+                <button onclick="goToStep(1)" id="nav-btn-1" class="nav-menu-item px-2 py-1 rounded-lg text-xs font-heading font-bold text-gray-700 hover:bg-[#FFE082] transition flex items-center gap-1">
+                    🏠 <span>Pembuka</span>
+                </button>
+                <button onclick="goToStep(2)" id="nav-btn-2" class="nav-menu-item px-2 py-1 rounded-lg text-xs font-heading font-bold text-gray-700 hover:bg-[#FFE082] transition flex items-center gap-1">
+                    🎯 <span>Tujuan</span>
+                </button>
+                <button onclick="goToStep(3)" id="nav-btn-3" class="nav-menu-item px-2 py-1 rounded-lg text-xs font-heading font-bold text-gray-700 hover:bg-[#FFE082] transition flex items-center gap-1">
+                    📖 <span>Materi (3 Cerita)</span>
+                </button>
+                <button onclick="goToStep(4)" id="nav-btn-4" class="nav-menu-item px-2 py-1 rounded-lg text-xs font-heading font-bold text-gray-700 hover:bg-[#FFE082] transition flex items-center gap-1">
+                    👥 <span>Mengenal Tokoh</span>
+                </button>
+                <button onclick="goToStep(5)" id="nav-btn-5" class="nav-menu-item px-2 py-1 rounded-lg text-xs font-heading font-bold text-gray-700 hover:bg-[#FFE082] transition flex items-center gap-1">
+                    🧩 <span>Cari Sifat</span>
+                </button>
+                <button onclick="goToStep(6)" id="nav-btn-6" class="nav-menu-item px-2 py-1 rounded-lg text-xs font-heading font-bold text-gray-700 hover:bg-[#FFE082] transition flex items-center gap-1">
+                    ✨ <span>Pesan Moral</span>
+                </button>
+                <button onclick="goToStep(7)" id="nav-btn-7" class="nav-menu-item px-2 py-1 rounded-lg text-xs font-heading font-bold text-gray-700 hover:bg-[#FFE082] transition flex items-center gap-1">
+                    ✍️ <span>Kuis Formatif</span>
+                </button>
+                <button onclick="goToStep(8)" id="nav-btn-8" class="nav-menu-item px-2 py-1 rounded-lg text-xs font-heading font-bold text-gray-700 hover:bg-[#FFE082] transition flex items-center gap-1">
+                    📝 <span>Evaluasi Akhir</span>
+                </button>
+                <button onclick="goToStep(9)" id="nav-btn-9" class="nav-menu-item px-2 py-1 rounded-lg text-xs font-heading font-bold text-gray-700 hover:bg-[#FFE082] transition flex items-center gap-1">
+                    🏆 <span>Refleksi & Hadiah</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container Card -->
+    <main class="w-full max-w-5xl min-h-[580px] card-bright p-5 md:p-8 flex flex-col justify-between relative overflow-hidden bg-white">
+        
+        <!-- Content Inject Area (JS) -->
+        <div id="content-area" class="w-full flex-grow flex flex-col justify-center">
+            <!-- Content will be injected dynamically -->
+        </div>
+
+        <!-- Navigation Footer inside Main Card -->
+        <div id="navigation-bar" class="mt-6 pt-4 border-t-3 border-[#FFF0F0] flex justify-between items-center">
+            <button id="btn-prev" onclick="prevStep()" class="px-5 py-2.5 rounded-2xl bg-gray-200 text-gray-700 font-heading font-bold text-sm hover:bg-gray-300 transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Sebelum
+            </button>
+            
+            <div class="text-xs font-heading font-extrabold text-emerald-700 bg-emerald-100 px-3 py-1.5 rounded-full border border-emerald-300">
+                Halaman <span id="current-page-num">1</span> dari 9
+            </div>
+
+            <button id="btn-next" onclick="nextStep()" class="btn-child-primary px-6 py-2.5 rounded-2xl font-heading font-bold text-sm flex items-center gap-2">
+                Lanjut <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- Halaman Input Nama Peserta Didik -->
+    <div id="name-gate" class="fixed inset-0 z-[60] flex items-center justify-center p-4" style="background: linear-gradient(135deg, #FFF5EB 0%, #E8F8F5 100%);">
+        <div class="card-bright w-full max-w-md p-6 md:p-8 text-center space-y-4">
+            <div class="w-24 h-24 bg-[#FFD3B6] rounded-full flex items-center justify-center text-5xl mx-auto border-4 border-[#FF8B94] bounce-fun shadow-md">
+                👋
+            </div>
+            <span class="bg-[#A8E6CF] text-[#1D3557] px-4 py-1.5 rounded-full text-xs font-heading font-extrabold inline-block">
+                📚 Petualangan Cerita Rakyat • Kelas V SD
+            </span>
+            <h2 class="text-2xl md:text-3xl font-heading font-extrabold text-[#1E3A8A]">Halo, Sahabat Cilik!</h2>
+            <p class="text-sm text-gray-700 font-semibold">Sebelum memulai petualangan, ayo tuliskan namamu dulu.</p>
+
+            <form onsubmit="submitName(event)" class="space-y-3 text-left">
+                <label for="name-input" class="text-xs font-heading font-bold text-gray-700 block">Nama Lengkap Peserta Didik</label>
+                <input id="name-input" type="text" maxlength="40" autocomplete="off" placeholder="Contoh: Budi Santoso"
+                    class="w-full p-3 rounded-2xl border-3 border-[#FFD97D] bg-[#FFFBEF] font-bold text-sm focus:outline-none focus:border-[#4ECDC4]">
+                <p id="name-error" class="text-xs font-bold text-red-600 hidden">⚠️ Nama belum diisi. Tuliskan namamu dulu ya!</p>
+                <button type="submit" class="btn-child-primary w-full px-6 py-3 rounded-2xl font-heading font-extrabold text-sm flex items-center justify-center gap-2">
+                    🚀 Mulai Petualangan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast Modal -->
+    <div id="toast-modal" class="fixed bottom-6 right-6 hidden bg-white border-4 border-emerald-400 shadow-2xl rounded-2xl p-4 max-w-xs transition-all transform duration-300 z-50">
+        <div class="flex items-start space-x-3">
+            <div id="toast-icon" class="text-3xl">
+                🌟
+            </div>
+            <div>
+                <h4 id="toast-title" class="font-heading font-extrabold text-base text-gray-800">Hebat!</h4>
+                <p id="toast-desc" class="text-xs text-gray-600 font-semibold mt-0.5">Jawaban kamu tepat sekali.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script Logic -->
+    <script>
+        // Tone JS Audio Sound Effects
+        let synth, synthCorrect, synthWrong;
+        try {
+            synth = new Tone.Synth().toDestination();
+            synthCorrect = new Tone.PolySynth().toDestination();
+            synthWrong = new Tone.MembraneSynth().toDestination();
+        } catch(e) { console.log("Audio ready"); }
+
+        function playSound(type) {
+            try {
+                if (Tone.context.state !== 'running') Tone.start();
+                if (type === 'click') synth.triggerAttackRelease("E5", "16n");
+                else if (type === 'correct') {
+                    synthCorrect.triggerAttackRelease(["C4", "E4", "G4", "C5"], "8n");
+                    triggerConfetti();
+                } else if (type === 'wrong') synthWrong.triggerAttackRelease("G2", "8n");
+                else if (type === 'win') {
+                    synthCorrect.triggerAttackRelease(["C4", "E4", "G4", "B4", "C5"], "4n");
+                    triggerConfetti();
+                }
+            } catch (err) {}
+        }
+
+        function triggerConfetti() {
+            try {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            } catch(e){}
+        }
+
+        // State Management
+        let currentStep = 1;
+        const totalSteps = 9;
+        let selectedStoryIndex = 0; // 0: Timun Mas, 1: Kancil & Buaya, 2: Malin Kundang
+
+        // 3 Story Data
+        const storiesData = [
+            {
+                id: 'timun',
+                title: 'Timun Mas & Raksasa',
+                origin: 'Cerita Rakyat Jawa Tengah',
+                icon: '🥒',
+                color: '#E8F5E9',
+                borderColor: '#A5D6A7',
+                textColor: '#1B4332',
+                content: `Dahulu kala di sebuah desa, tinggal Mbok Srini yang merindukan anak. Seorang Raksasa memberinya biji mentimun ajaib. Lahirlah bayi perempuan cantik dinamai Timun Mas. Raksasa berjanji mengambilnya saat berusia 17 tahun.\n\nSaat Timun Mas dewasa, Raksasa datang menagih janji. Mbok Srini membekali Timun Mas 4 bekal ajaib: biji mentimun, jarum, garam, dan terasi.\n\nSaat dikejar, Timun Mas melempar biji mentimun menjadi ladang timun lebat, jarum menjadi hutan bambu tajam, garam menjadi lautan luas, dan terasi menjadi lautan lumpur mendidih yang menenggelamkan Raksasa. Timun Mas pun selamat dan hidup bahagia bersama ibunya.`,
+                characters: [
+                    { name: 'Timun Mas', role: 'Gadis pemberani dan cerdik', icon: '👧', bg: 'bg-yellow-100' },
+                    { name: 'Mbok Srini', role: 'Ibu penyayang yang penuh kasih', icon: '👵', bg: 'bg-green-100' },
+                    { name: 'Raksasa', role: 'Makhluk serakah dan jahat', icon: '👹', bg: 'bg-red-100' }
+                ],
+                moral: 'Keberanian, kecerdikan, serta doa dapat mengalahkan rintangan terbesar sekalipun.'
+            },
+            {
+                id: 'kancil',
+                title: 'Si Kancil & Buaya',
+                origin: 'Cerita Rakyat Nusantara',
+                icon: '🦌',
+                color: '#FFF9E6',
+                borderColor: '#FFE082',
+                textColor: '#78350F',
+                content: `Suatu hari, Si Kancil yang cerdik ingin menyeberangi sungai deras untuk memakan buah-buahan segar di seberang. Namun, sungai itu dihuni oleh rombongan buaya yang lapar.\n\nKancil tidak kehilangan akal. Ia berteriak kepada buaya bahwa Raja Hutan mengundangnya untuk menghitung jumlah buaya untuk diberi hadiah daging. Buaya-buaya pun berbaris rapi dari tepi sungai ke tepi seberang.\n\nKancil melompat dari punggung buaya satu ke buaya lainnya sambil menghitung: "Satu, dua, tiga!". Setelah sampai di seberang sungai, Kancil tertawa gembira dan mengucapkan terima kasih karena telah dibantu menyeberang.`,
+                characters: [
+                    { name: 'Si Kancil', role: 'Hewan kecil yang sangat cerdik', icon: '🦌', bg: 'bg-amber-100' },
+                    { name: 'Rombongan Buaya', role: 'Hewan pemangsa yang mudah percaya', icon: '🐊', bg: 'bg-emerald-100' }
+                ],
+                moral: 'Gunakan akal dan pikiran cerdik untuk menyelesaikan kesulitan, bukan dengan kekerasan.'
+            },
+            {
+                id: 'malin',
+                title: 'Malin Kundang',
+                origin: 'Cerita Rakyat Sumatera Barat',
+                icon: '⛵',
+                color: '#E0F2FE',
+                borderColor: '#7DD3FC',
+                textColor: '#0C4A6E',
+                content: `Malin Kundang adalah seorang pemuda miskin yang pergi merantau bersama kapal berlayar. Berkat kerja kerasnya, Malin menjadi sangat kaya raya dan memiliki kapal yang megah.\n\nSuatu hari, kapal Malin berlabuh di kampung halamannya. Ibunya yang tua rentan dan miskin berlari gembira ingin memeluk anaknya. Namun, Malin merasa malu memiliki ibu miskin dan menyakitinya dengan membentak dan mengusirnya.\n\nDengan hati hancur, sang ibu berdoa. Tiba-tiba badai dahsyat menghantam kapal Malin dan petir menyambar. Malin Kundang pun dikutuk berubah menjadi batu di tepi pantai.`,
+                characters: [
+                    { name: 'Malin Kundang', role: 'Anak kaya yang durhaka pada ibu', icon: '🧑', bg: 'bg-blue-100' },
+                    { name: 'Ibu Malin', role: 'Ibu tua yang sabar dan tulus', icon: '👵', bg: 'bg-pink-100' }
+                ],
+                moral: 'Hormati dan sayangilah orang tuamu. Jangan pernah sombong atau durhaka atas keberhasilanmu.'
+            }
+        ];
+
+        let retellText = "";
+        let studentName = "";
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        function submitName(e) {
+            e.preventDefault();
+            const val = document.getElementById('name-input').value.trim();
+            const err = document.getElementById('name-error');
+            if (!val) {
+                err.classList.remove('hidden');
+                playSound('wrong');
+                return;
+            }
+            studentName = val;
+            const badge = document.getElementById('student-name-badge');
+            badge.innerText = '👤 ' + studentName;
+            badge.classList.remove('hidden');
+            document.getElementById('name-gate').classList.add('hidden');
+            currentStep = 1;
+            playSound('win');
+            renderStep();
+            showToast('Selamat Datang!', 'Halo ' + studentName + ', selamat belajar!');
+        }
+
+        // Text To Speech Utility
+        let isSpeaking = false;
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                if (isSpeaking) {
+                    window.speechSynthesis.cancel();
+                    isSpeaking = false;
+                    document.getElementById('audio-btn-icon')?.classList.replace('fa-square-stop', 'fa-volume-high');
+                    return;
+                }
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'id-ID';
+                utterance.rate = 0.9;
+                
+                document.getElementById('audio-btn-icon')?.classList.replace('fa-volume-high', 'fa-square-stop');
+                isSpeaking = true;
+
+                utterance.onend = () => {
+                    isSpeaking = false;
+                    document.getElementById('audio-btn-icon')?.classList.replace('fa-square-stop', 'fa-volume-high');
+                };
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Fitur suara tidak didukung browser ini.");
+            }
+        }
+
+        // Direct Step Nav Switch
+        function goToStep(stepNum) {
+            currentStep = stepNum;
+            playSound('click');
+            renderStep();
+        }
+
+        function updateNavMenu() {
+            document.querySelectorAll('.nav-menu-item').forEach((btn, index) => {
+                if (index + 1 === currentStep) {
+                    btn.classList.add('nav-menu-active');
+                } else {
+                    btn.classList.remove('nav-menu-active');
+                }
+            });
+        }
+
+        // Render Page Content Step-by-Step
+        function renderStep() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            isSpeaking = false;
+
+            updateNavMenu();
+
+            const content = document.getElementById('content-area');
+            document.getElementById('current-page-num').innerText = currentStep;
+
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            
+            btnPrev.style.visibility = (currentStep === 1) ? 'hidden' : 'visible';
+            
+            if (currentStep === totalSteps) {
+                btnNext.innerHTML = 'Selesai! 🎉';
+                btnNext.className = "btn-child-coral px-6 py-2.5 rounded-2xl font-heading font-bold text-sm flex items-center gap-2";
+            } else {
+                btnNext.innerHTML = 'Lanjut <i class="fa-solid fa-arrow-right"></i>';
+                btnNext.className = "btn-child-primary px-6 py-2.5 rounded-2xl font-heading font-bold text-sm flex items-center gap-2";
+            }
+
+            const currentStory = storiesData[selectedStoryIndex];
+
+            switch(currentStep) {
+                case 1: // Pembuka
+                    content.innerHTML = `
+                        <div class="text-center py-4 flex flex-col items-center">
+                            <div class="w-28 h-28 bg-[#FFD3B6] rounded-full flex items-center justify-center text-6xl mb-4 shadow-md bounce-fun border-4 border-[#FF8B94]">
+                                📖
+                            </div>
+                            <span class="bg-[#A8E6CF] text-[#1D3557] px-4 py-1.5 rounded-full text-xs font-heading font-extrabold mb-2 shadow-sm">
+                                🌟 Media Pembelajaran Interaktif SD Kelas V
+                            </span>
+                            <h2 class="text-3xl md:text-4xl font-heading font-extrabold text-[#1E3A8A] mb-3">
+                                Petualangan Membaca Teks Sastra
+                            </h2>
+                            <p class="text-sm md:text-base text-gray-700 max-w-xl mb-6 font-semibold leading-relaxed">
+                                Halo, ${studentName ? escapeHtml(studentName) : 'sahabat cilik'}! Selamat datang di dunia dongeng nusantara. Pilih ceritamu, kenali tokohnya, temukan kebaikannya, dan jadilah juara membaca!
+                            </p>
+                            <div class="flex gap-3">
+                                <button onclick="goToStep(3); playSound('click');" class="btn-child-yellow px-6 py-3 rounded-2xl font-heading font-extrabold text-sm flex items-center gap-2 shadow-md wiggle-fun">
+                                    📚 Langsung Pilih 3 Cerita
+                                </button>
+                                <button onclick="nextStep(); playSound('click');" class="btn-child-primary px-7 py-3 rounded-2xl font-heading font-extrabold text-sm flex items-center gap-2 shadow-md">
+                                    🚀 Ikuti Petualangan
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 2: // Tujuan Pembelajaran
+                    content.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="text-center mb-4">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-[#1D3557] bg-[#AED9E0] px-4 py-1 rounded-full">Target Kemampuan</span>
+                                <h2 class="text-2xl md:text-3xl font-heading font-extrabold text-[#1E3A8A] mt-1">Apa Yang Akan Kita Capai?</h2>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-[#F0FDF4] p-4 rounded-2xl border-3 border-[#A8E6CF] flex items-start gap-3 shadow-sm">
+                                    <div class="w-12 h-12 rounded-2xl bg-[#4ECDC4] text-white flex items-center justify-center text-xl shrink-0 font-extrabold shadow-sm">1</div>
+                                    <div>
+                                        <h4 class="font-heading font-bold text-emerald-900 text-base">Membaca & Menyimak</h4>
+                                        <p class="text-xs text-gray-600 font-semibold mt-1">Membaca 3 pilihan cerita rakyat seru atau mendengarkan suara narasi.</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-[#FFF5F5] p-4 rounded-2xl border-3 border-[#FF8B94] flex items-start gap-3 shadow-sm">
+                                    <div class="w-12 h-12 rounded-2xl bg-[#FF8B94] text-white flex items-center justify-center text-xl shrink-0 font-extrabold shadow-sm">2</div>
+                                    <div>
+                                        <h4 class="font-heading font-bold text-red-900 text-base">Mengenal Tokoh & Sifat</h4>
+                                        <p class="text-xs text-gray-600 font-semibold mt-1">Mengetahui nama tokoh dan membedakan mana sifat baik serta jahat.</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-[#FFF9E6] p-4 rounded-2xl border-3 border-[#FFD97D] flex items-start gap-3 shadow-sm">
+                                    <div class="w-12 h-12 rounded-2xl bg-[#FFD97D] text-amber-900 flex items-center justify-center text-xl shrink-0 font-extrabold shadow-sm">3</div>
+                                    <div>
+                                        <h4 class="font-heading font-bold text-amber-900 text-base">Menemukan Pesan Moral</h4>
+                                        <p class="text-xs text-gray-600 font-semibold mt-1">Mengambil pelajaran atau amanat kebaikan yang ada di cerita.</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-[#F0F9FF] p-4 rounded-2xl border-3 border-[#7DD3FC] flex items-start gap-3 shadow-sm">
+                                    <div class="w-12 h-12 rounded-2xl bg-[#38BDF8] text-white flex items-center justify-center text-xl shrink-0 font-extrabold shadow-sm">4</div>
+                                    <div>
+                                        <h4 class="font-heading font-bold text-sky-900 text-base">Menceritakan Kembali</h4>
+                                        <p class="text-xs text-gray-600 font-semibold mt-1">Menuliskan kembali isi cerita menggunakan bahasa pemahamanmu sendiri.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 3: // Membaca Cerita (PILIHAN 3 MATERI)
+                    content.innerHTML = `
+                        <div class="space-y-3">
+                            <!-- Story Selector Tabs (PILIHAN 3 CERITA) -->
+                            <div class="flex flex-wrap items-center justify-between bg-[#FFF3BF] p-2 rounded-2xl border-2 border-[#FFD97D] gap-2">
+                                <span class="text-xs font-heading font-extrabold text-amber-900 pl-2">Pilih Cerita Materi:</span>
+                                <div class="flex gap-2">
+                                    ${storiesData.map((s, idx) => `
+                                        <button onclick="changeStory(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-heading font-bold border-2 transition flex items-center gap-1 ${idx === selectedStoryIndex ? 'story-tab-active' : 'bg-white text-gray-700 border-gray-200 hover:bg-yellow-100'}">
+                                            <span>${s.icon}</span> <span>${s.title.split(' ')[0]}</span>
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <!-- Audio & Header -->
+                            <div class="flex justify-between items-center bg-[#E0F2FE] p-3 rounded-2xl border-2 border-[#7DD3FC]">
+                                <div>
+                                    <h3 class="font-heading font-extrabold text-[#0C4A6E] text-base">${currentStory.icon} ${currentStory.title}</h3>
+                                    <p class="text-xs text-sky-800 font-bold">${currentStory.origin}</p>
+                                </div>
+                                <button onclick="speakText(\`${currentStory.content.replace(/\n/g, ' ')}\`)" class="btn-child-coral px-4 py-2 rounded-xl text-xs font-heading font-bold flex items-center gap-2">
+                                    <i id="audio-btn-icon" class="fa-solid fa-volume-high"></i> Narasi Suara
+                                </button>
+                            </div>
+
+                            <!-- Story Content Box -->
+                            <div class="bg-white p-5 rounded-2xl border-3 border-[#A8E6CF] max-h-64 overflow-y-auto space-y-3 text-sm md:text-base text-gray-800 font-semibold leading-relaxed shadow-inner">
+                                ${currentStory.content.split('\n\n').map(p => `<p class="indent-4">${p}</p>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 4: // Mengenal Tokoh
+                    content.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="text-center mb-3">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-800 bg-[#A8E6CF] px-3.5 py-1 rounded-full">Identifikasi Peran</span>
+                                <h2 class="text-2xl font-heading font-extrabold text-gray-800 mt-1">Tokoh-Tokoh Dalam Cerita "${currentStory.title}"</h2>
+                                <p class="text-xs text-gray-600 font-bold">Klik kartu tokoh di bawah ini untuk mengenal karakter mereka!</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-${currentStory.characters.length} gap-4">
+                                ${currentStory.characters.map(char => `
+                                    <div onclick="showCharDetail('${char.name}', '${char.role}')" class="${char.bg} p-4 rounded-2xl border-3 border-gray-300 cursor-pointer hover:scale-105 transition text-center shadow-md wiggle-fun">
+                                        <div class="text-5xl mb-2">${char.icon}</div>
+                                        <h4 class="font-heading font-extrabold text-gray-800 text-lg">${char.name}</h4>
+                                        <p class="text-xs font-bold text-gray-600 mt-1">Klik untuk detail</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <div id="char-detail-box" class="bg-[#FFF9E6] p-4 rounded-2xl border-2 border-[#FFD97D] text-center min-h-[75px] flex flex-col items-center justify-center">
+                                <p class="text-xs font-bold text-amber-900">👇 Sentuh salah satu kartu tokoh di atas untuk melihat penjelasannya.</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 5: // Sifat Tokoh (Interactive Matching)
+                    content.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="text-center mb-2">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-purple-900 bg-[#E2D4F9] px-3.5 py-1 rounded-full">Latihan Karakter</span>
+                                <h2 class="text-2xl font-heading font-extrabold text-gray-800 mt-1">Cocokkan Sifat Tokoh Ini!</h2>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="bg-white p-3.5 rounded-2xl border-2 border-emerald-300 flex flex-col md:flex-row items-center justify-between gap-3 shadow-sm">
+                                    <div class="flex items-center space-x-3 w-full md:w-1/3">
+                                        <span class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 font-extrabold flex items-center justify-center text-sm">1</span>
+                                        <span class="font-heading font-extrabold text-gray-800 text-base">${currentStory.characters[0]?.name || 'Tokoh 1'}</span>
+                                    </div>
+                                    <select id="match-1" onchange="checkMatch()" class="w-full md:w-2/3 p-2.5 rounded-xl border-2 border-gray-300 font-bold text-xs focus:border-emerald-400 focus:outline-none">
+                                        <option value="">-- Pilih Sifat yang Tepat --</option>
+                                        <option value="baik">Pemberani, Cerdik, atau Baik Hati</option>
+                                        <option value="jahat">Serakah, Pemarah, atau Kejam</option>
+                                        <option value="penakut">Penakut dan Pemalas</option>
+                                    </select>
+                                </div>
+
+                                <div class="bg-white p-3.5 rounded-2xl border-2 border-pink-300 flex flex-col md:flex-row items-center justify-between gap-3 shadow-sm">
+                                    <div class="flex items-center space-x-3 w-full md:w-1/3">
+                                        <span class="w-9 h-9 rounded-full bg-pink-100 text-pink-800 font-extrabold flex items-center justify-center text-sm">2</span>
+                                        <span class="font-heading font-extrabold text-gray-800 text-base">${currentStory.characters[1]?.name || 'Tokoh 2'}</span>
+                                    </div>
+                                    <select id="match-2" onchange="checkMatch()" class="w-full md:w-2/3 p-2.5 rounded-xl border-2 border-gray-300 font-bold text-xs focus:border-pink-400 focus:outline-none">
+                                        <option value="">-- Pilih Sifat yang Tepat --</option>
+                                        <option value="kasih">Penyayang / Mudah Mengalah</option>
+                                        <option value="pemarah">Sombong dan Kejam</option>
+                                        <option value="acuh">Tidak Peduli</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="match-feedback" class="mt-4 p-3 rounded-2xl text-xs font-extrabold text-center hidden"></div>
+                        </div>
+                    `;
+                    break;
+
+                case 6: // Pesan Moral
+                    content.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="text-center mb-3">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-amber-900 bg-[#FFD97D] px-3.5 py-1 rounded-full">Amanat Dongeng</span>
+                                <h2 class="text-2xl font-heading font-extrabold text-gray-800 mt-1">Apa Pesan Moral Dari Cerita "${currentStory.title}"?</h2>
+                            </div>
+
+                            <div class="space-y-3">
+                                <button onclick="selectMoral(this, true)" class="moral-opt w-full text-left p-4 rounded-2xl border-3 border-gray-200 bg-white hover:bg-emerald-50 transition flex items-center justify-between shadow-sm">
+                                    <span class="text-xs md:text-sm font-extrabold text-gray-800">✨ ${currentStory.moral}</span>
+                                    <i class="fa-regular fa-circle-check text-emerald-500 text-xl"></i>
+                                </button>
+
+                                <button onclick="selectMoral(this, false)" class="moral-opt w-full text-left p-4 rounded-2xl border-3 border-gray-200 bg-white hover:bg-red-50 transition flex items-center justify-between shadow-sm">
+                                    <span class="text-xs md:text-sm font-extrabold text-gray-800">❌ Kita tidak perlu berusaha dan pasrah saja saat menghadapi masalah besar.</span>
+                                    <i class="fa-regular fa-circle text-gray-300 text-xl"></i>
+                                </button>
+                            </div>
+
+                            <div id="moral-feedback" class="p-4 rounded-2xl bg-[#E8F5E9] border-2 border-[#A5D6A7] text-xs font-bold text-emerald-900 hidden">
+                                💡 <strong>Penjelasan Pintar:</strong> Jawabanmu tepat sekali! Setiap cerita rakyat nusantara mengajarkan nilai-nilai kebaikan untuk kehidupan sehari-hari.
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 7: // Kuis Formatif (Interactive Assessment)
+                    content.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="text-center mb-2">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-white bg-[#FF8B94] px-4 py-1 rounded-full">Kuis Pemahaman Formatif</span>
+                                <h2 class="text-2xl font-heading font-extrabold text-gray-800 mt-1">Uji Pengetahuanmu!</h2>
+                            </div>
+
+                            <div class="bg-[#FFF9E6] p-4 rounded-2xl border-2 border-[#FFD97D] space-y-3 shadow-sm">
+                                <h4 class="font-heading font-extrabold text-gray-800 text-sm">1. Cerita "${currentStory.title}" berasal dari mana?</h4>
+                                <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+                                    <button onclick="answerFormatif('q1', true, this)" class="q1-btn p-3 rounded-xl border-2 border-gray-200 bg-white text-left hover:bg-emerald-50">${currentStory.origin}</button>
+                                    <button onclick="answerFormatif('q1', false, this)" class="q1-btn p-3 rounded-xl border-2 border-gray-200 bg-white text-left hover:bg-red-50">Luar Negeri</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-[#E0F2FE] p-4 rounded-2xl border-2 border-[#7DD3FC] space-y-3 shadow-sm">
+                                <h4 class="font-heading font-extrabold text-gray-800 text-sm">2. Apa yang sebaiknya dilakukan setelah membaca cerita rakyat?</h4>
+                                <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+                                    <button onclick="answerFormatif('q2', false, this)" class="q2-btn p-3 rounded-xl border-2 border-gray-200 bg-white text-left hover:bg-red-50">Melupakan pesan kebaikannya</button>
+                                    <button onclick="answerFormatif('q2', true, this)" class="q2-btn p-3 rounded-xl border-2 border-gray-200 bg-white text-left hover:bg-emerald-50">Meneladani pesan kebaikan cerita</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 8: // Evaluasi Akhir & Menceritakan Kembali (Sumatif)
+                    content.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="text-center mb-2">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-white bg-[#4ECDC4] px-4 py-1 rounded-full">Asesmen Sumatif</span>
+                                <h2 class="text-2xl font-heading font-extrabold text-gray-800 mt-1">Tugas Menceritakan Kembali</h2>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-2xl border-3 border-[#A8E6CF] space-y-3 shadow-sm">
+                                <h4 class="font-heading font-extrabold text-gray-800 text-sm">✍️ Tuliskan Kembali Ringkasan Cerita "${currentStory.title}"</h4>
+                                <p class="text-xs text-gray-600 font-bold">Gunakan kata-katamu sendiri secara singkat di kolom di bawah ini:</p>
+                                <textarea id="retell-input" oninput="retellText = this.value" placeholder="Contoh: Cerita ini mengisahkan tentang..." class="w-full h-28 p-3 rounded-xl border-2 border-gray-300 font-bold text-xs focus:border-emerald-400 focus:outline-none resize-none">${retellText}</textarea>
+                                <button onclick="submitRetell()" class="btn-child-primary px-4 py-2 rounded-xl text-xs font-heading font-bold">
+                                    💾 Simpan Ringkasan Saya
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 9: // Refleksi & Penutup
+                    content.innerHTML = `
+                        <div class="text-center py-2 space-y-4">
+                            <div class="w-24 h-24 bg-[#FFD97D] rounded-full flex items-center justify-center text-5xl mx-auto border-4 border-[#F4B41A] bounce-fun shadow-md">
+                                🏆
+                            </div>
+
+                            <h2 class="text-2xl md:text-3xl font-heading font-extrabold text-[#1E3A8A]">
+                                Hore${studentName ? ', ' + escapeHtml(studentName) : ''}! Kamu Berhasil Menjadi Bintang Membaca!
+                            </h2>
+
+                            <div class="bg-white p-4 rounded-2xl border-3 border-[#FF8B94] text-left max-w-lg mx-auto space-y-3 shadow-sm">
+                                <h4 class="font-heading font-extrabold text-gray-800 text-sm text-center">Refleksi Pembelajaran Siswa</h4>
+                                <div>
+                                    <label class="text-xs font-bold text-gray-700 block mb-1"> Bagian materi apa yang paling menyenangkan?</label>
+                                    <input type="text" placeholder="Contoh: Menyimak narasi suara cerita..." class="w-full p-2.5 rounded-xl border-2 border-gray-200 text-xs font-bold focus:outline-none focus:border-emerald-400">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold text-gray-700 block mb-1"> Kebaikan apa yang akan kamu lakukan hari ini?</label>
+                                    <input type="text" placeholder="Contoh: Bersikap jujur dan sayang orang tua..." class="w-full p-2.5 rounded-xl border-2 border-gray-200 text-xs font-bold focus:outline-none focus:border-emerald-400">
+                                </div>
+                            </div>
+
+                            <div class="pt-1">
+                                <button onclick="resetApp()" class="btn-child-yellow px-6 py-2.5 rounded-2xl text-xs font-heading font-extrabold">
+                                    🔄 Ulangi Pembelajaran Sastra
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+        }
+
+        // State Action Handlers
+        function changeStory(idx) {
+            selectedStoryIndex = idx;
+            playSound('click');
+            renderStep();
+            showToast('Cerita Diganti!', `Sekarang mempelajari ${storiesData[idx].title}`);
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                playSound('click');
+                renderStep();
+            } else {
+                playSound('win');
+                showToast('Selamat!', 'Kamu telah menyelesaikan seluruh petualangan media membaca!');
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                playSound('click');
+                renderStep();
+            }
+        }
+
+        function resetApp() {
+            currentStep = 1;
+            selectedStoryIndex = 0;
+            retellText = "";
+            studentName = "";
+            document.getElementById('student-name-badge').classList.add('hidden');
+            document.getElementById('name-input').value = '';
+            document.getElementById('name-error').classList.add('hidden');
+            document.getElementById('name-gate').classList.remove('hidden');
+            playSound('click');
+            renderStep();
+        }
+
+        function showCharDetail(name, role) {
+            playSound('click');
+            const box = document.getElementById('char-detail-box');
+            box.innerHTML = `
+                <h4 class="font-heading font-extrabold text-gray-800 text-base">${name}</h4>
+                <p class="text-xs font-bold text-amber-900 mt-0.5">${role}</p>
+            `;
+        }
+
+        function checkMatch() {
+            const m1 = document.getElementById('match-1').value;
+            const m2 = document.getElementById('match-2').value;
+            const feedback = document.getElementById('match-feedback');
+
+            if (m1 && m2) {
+                feedback.classList.remove('hidden');
+                if (m1 === 'baik' && (m2 === 'kasih' || m2 === 'jahat')) {
+                    playSound('correct');
+                    feedback.className = "mt-4 p-3 rounded-2xl text-xs font-extrabold text-center bg-[#E8F5E9] text-[#2E7D32] border-2 border-[#A5D6A7]";
+                    feedback.innerHTML = '🎉 Jawabanmu Benar! Karakter tokoh berhasil teridentifikasi.';
+                } else {
+                    playSound('wrong');
+                    feedback.className = "mt-4 p-3 rounded-2xl text-xs font-extrabold text-center bg-[#FFEBEE] text-[#C62828] border-2 border-[#FFCDD2]";
+                    feedback.innerHTML = '❌ Coba periksa kembali sifat tokoh sesuai teks cerita ya!';
+                }
+            }
+        }
+
+        function selectMoral(btn, isCorrect) {
+            document.querySelectorAll('.moral-opt').forEach(b => {
+                b.classList.remove('border-emerald-500', 'bg-emerald-50');
+            });
+            btn.classList.add('border-emerald-500', 'bg-emerald-50');
+
+            const feedback = document.getElementById('moral-feedback');
+            feedback.classList.remove('hidden');
+
+            if (isCorrect) {
+                playSound('correct');
+                showToast('Hebat!', 'Pesan moral pilihanmu tepat sekali!');
+            } else {
+                playSound('wrong');
+                showToast('Yuk Coba Lagi', 'Pilihan itu bukan pesan moral positif.', true);
+            }
+        }
+
+        function answerFormatif(qId, isCorrect, btn) {
+            const btns = document.querySelectorAll(`.${qId}-btn`);
+            btns.forEach(b => b.classList.remove('bg-emerald-100', 'border-emerald-500', 'bg-red-100'));
+
+            if (isCorrect) {
+                playSound('correct');
+                btn.classList.add('bg-emerald-100', 'border-emerald-500');
+                showToast('Jawaban Benar!', 'Skor bintangmu bertambah! 🌟');
+            } else {
+                playSound('wrong');
+                btn.classList.add('bg-red-100', 'border-red-500');
+                showToast('Kurang Tepat', 'Coba baca kembali pilihan jawaban!', true);
+            }
+        }
+
+        function submitRetell() {
+            if (retellText.trim().length > 10) {
+                playSound('correct');
+                showToast('Tersimpan!', 'Ringkasan cerita kamu berhasil disimpan!');
+            } else {
+                playSound('wrong');
+                showToast('Tulis Lebih Banyak', 'Tuliskan minimal 1-2 kalimat ringkasan ya!', true);
+            }
+        }
+
+        function showToast(title, desc, isWarning = false) {
+            const toast = document.getElementById('toast-modal');
+            const toastTitle = document.getElementById('toast-title');
+            const toastDesc = document.getElementById('toast-desc');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastTitle.innerText = title;
+            toastDesc.innerText = desc;
+
+            if (isWarning) {
+                toastIcon.innerText = '⚠️';
+                toast.classList.replace('border-emerald-400', 'border-amber-400');
+            } else {
+                toastIcon.innerText = '🌟';
+                toast.classList.replace('border-amber-400', 'border-emerald-400');
+            }
+
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2800);
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            renderStep();
+        };
+    </script>
+</body>
+</html>
